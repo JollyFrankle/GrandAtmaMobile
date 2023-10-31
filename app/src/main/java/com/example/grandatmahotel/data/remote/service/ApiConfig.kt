@@ -9,9 +9,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiConfig {
+    const val BASE_URL = "http://192.168.84.167:4000"
+    const val WEB_URL = "http://gah-jinston.vercel.app"
+
+    fun getImage(uid: String): String {
+        return "${BASE_URL}/public/image/$uid"
+    }
+
     private val customHeader = Interceptor { chain ->
         val request = chain.request().newBuilder()
             .addHeader("Accept", "application/json")
+            .addHeader("x-package-name", "com.example.grandatmahotel")
             .build()
         chain.proceed(request)
     }
@@ -27,7 +35,9 @@ object ApiConfig {
 
     fun getApiService(): ApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://gah-jinston-api.azurewebsites.net/")
+//            .baseUrl("https://gah-jinston-api.azurewebsites.net/")
+//            .baseUrl("http://192.168.18.184:4000/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

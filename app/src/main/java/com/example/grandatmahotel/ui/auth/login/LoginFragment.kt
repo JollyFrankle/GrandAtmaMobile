@@ -2,17 +2,16 @@ package com.example.grandatmahotel.ui.auth.login
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.grandatmahotel.R
 import com.example.grandatmahotel.databinding.FragmentLoginBinding
-import com.example.grandatmahotel.ui.auth.MainViewModel
+import com.example.grandatmahotel.ui.customer.CustomerDashboardActivity
 import com.example.grandatmahotel.utils.Utils
 import com.example.grandatmahotel.utils.ViewModelFactory
 import kotlinx.coroutines.launch
@@ -39,6 +38,17 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // TODO 1: Set the click listener for the login button
+        binding.btnLogin.setOnClickListener {
+            val email = binding.tilEmail.editText?.text.toString()
+            val password = binding.tilPassword.editText?.text.toString()
+            viewModel.loginAsCustomer(email, password)
+        }
+
+        binding.btnLoginAsPegawai.setOnClickListener {
+            val email = binding.tilEmail.editText?.text.toString()
+            val password = binding.tilPassword.editText?.text.toString()
+            viewModel.loginAsPegawai(email, password)
+        }
 
         // TODO 2: Observe all the LiveData from the ViewModel
         setupViewModelBinding()
@@ -62,23 +72,26 @@ class LoginFragment : Fragment() {
         // Handling login result
         viewModel.loginResult.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
-                if (it.token.isNotEmpty()) {
-                    // Go to homepage
-//                    val intent = Intent(requireContext(), MainScreenActivity::class.java)
-//                    startActivity(intent)
-//                    requireActivity().finish()
+                if (it == 'c') {
+                    val intent = Intent(requireContext(), CustomerDashboardActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                } else if (it == 'p') {
+                    val intent = Intent(requireContext(), CustomerDashboardActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
                 }
             }
         }
 
         // Handling login error
-//        viewModel.loginError.observe(viewLifecycleOwner) {
-//            it.errors?.forEach { (key, value) ->
-//                when (key) {
-//                    "email" -> binding.inputEmail.error = value
-//                    "password" -> binding.inputPassword.error = value
-//                }
-//            }
-//        }
+        viewModel.loginError.observe(viewLifecycleOwner) {
+            it.errors?.forEach { (key, value) ->
+                when (key) {
+                    "username" -> binding.tilEmail.error = value
+                    "password" -> binding.tilPassword.error = value
+                }
+            }
+        }
     }
 }

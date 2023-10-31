@@ -17,6 +17,9 @@ import java.util.Locale
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 object Utils {
+    const val DF_TIMESTAMP = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    const val DF_DATE_READABLE = "dd MMMM yyyy"
+
     suspend fun getToken(context: Context): String {
         val pref = AppPreferences.getInstance(context.dataStore)
         return pref.getToken().first()
@@ -55,19 +58,38 @@ object Utils {
             .create()
     }
 
-    fun getCurrentDate(pattern: String = "yyyy-MM-dd"): String {
+    fun getCurrentDate(pattern: String = DF_TIMESTAMP): String {
         val date = Calendar.getInstance().time
         val formatter = SimpleDateFormat(pattern, Locale.getDefault())
         return formatter.format(date)
     }
 
-    fun formatDate(time: Date, pattern: String = "yyyy-MM-dd"): String {
+    fun formatDate(time: Date, pattern: String = DF_TIMESTAMP): String {
         val formatter = SimpleDateFormat(pattern, Locale.getDefault())
         return formatter.format(time)
     }
 
-    fun parseDate(dateString: String, pattern: String = "yyyy-MM-dd"): Date {
+    fun parseDate(dateString: String, pattern: String = DF_TIMESTAMP): Date {
         val formatter = SimpleDateFormat(pattern, Locale.getDefault())
         return formatter.parse(dateString)!!
+    }
+
+    fun getTanggalCheckOut(tanggalCheckIn: Date, jumlahMalam: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = tanggalCheckIn
+        calendar.add(Calendar.DATE, jumlahMalam)
+        return calendar.time
+    }
+
+    fun getRiwayatStatus(status: String): Pair<Int, String> {
+        return when(status) {
+            "belum" -> Pair(R.color.yellow_500, "Belum Bayar")
+            "dp" -> Pair(R.color.blue_500, "DP")
+            "lunas" -> Pair(R.color.blue_500, "Lunas")
+            "batal" -> Pair(R.color.red_500, "Batal")
+            "checkin" -> Pair(R.color.primary, "Check In")
+            "selesai" -> Pair(R.color.green_500, "Selesai")
+            else -> Pair(R.color.red_500, "Tidak diketahui")
+        }
     }
 }

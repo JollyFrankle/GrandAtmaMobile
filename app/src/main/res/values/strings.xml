@@ -2,4 +2,29 @@
     <string name="app_name">Grand Atma Hotel</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading">Loading…</string>
+
+    <!-- RV Item Jenis Kamar -->
+    <string name="rvijk_rating">%,.1f</string>
+    <string name="rvijk_room_type">Placeholder Room Type</string>
+    <string name="rvijk_description">Placeholder Description</string>
+    <string name="rvijk_selengkapnya">Selengkapnya</string>
+    <string name="rvijk_ukuran">%,.0f meter²</string>
+    <string name="rvijk_kapasitas">%d Dewasa</string>
+    <string name="rvijk_cd_img">Gambar Jenis Kamar</string>
+    <string name="rvijk_cd_icon">Icon</string>
+
+    <!-- RV Item Reservasi -->
+    <string name="rvir_mulai_menginap">Mulai Menginap</string>
+    <string name="rvir_selesai_menginap">Selesai Menginap</string>
+    <string name="rvir_jumlah_tamu">Jumlah Tamu</string>
+    <string name="rvir_h_total_harga_kamar">Total Harga Kamar</string>
+    <string name="rvir_lihat_detail">Lihat Detail</string>
+    <string name="rvir_jumlah_tamu_format">%d dewasa, %d anak (%d malam)</string>
+    <string name="rvir_total_harga_kamar">Rp %d</string>
+    <string name="bn_reservasi">Reservasi</string>
+    <string name="bn_profil_saya">Profil Saya</string>
+    <string name="ccm_keluar_akun">Keluar akun</string>
+
+
 </resources>

@@ -7,9 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.grandatmahotel.data.remote.model.ApiErrorResponse
-import com.example.grandatmahotel.data.remote.model.LoginInnerResponse
-import com.example.grandatmahotel.data.remote.model.UserCustomer
-import com.example.grandatmahotel.data.remote.model.UserPegawai
 import com.example.grandatmahotel.data.remote.service.ApiConfig
 import com.example.grandatmahotel.utils.Event
 import com.example.grandatmahotel.utils.Utils
@@ -25,44 +22,58 @@ class LoginViewModel(private val application: Application): ViewModel() {
     private val _message = MutableLiveData<Event<String>>()
     val message: LiveData<Event<String>> = _message
 
-    private val _loginResult = MutableLiveData<LoginInnerResponse>()
-    val loginResult: LiveData<LoginInnerResponse> = _loginResult
+    private val _loginResult = MutableLiveData<Char?>(null)
+    val loginResult: LiveData<Char?> = _loginResult
 
     private val _loginError = MutableLiveData<ApiErrorResponse>()
     val loginError: LiveData<ApiErrorResponse> = _loginError
 
-    fun clientLogin(email: String, password: String) = viewModelScope.launch {
+    fun loginAsCustomer(email: String, password: String) = viewModelScope.launch {
         try {
             _isLoading.value = true
-            val data = ApiConfig.getApiService().login(
+            val response = ApiConfig.getApiService().loginCustomer(
                 email = email,
                 password = password
             )
 
             // Set preferences
-            val userC = if (data.message == "Berhasil login sebagai customer") {
-                data.data.user as UserCustomer
+            val data = response.data
+            Utils.setToken(application, data.token)
+            Utils.setUserCustomer(application, data.user)
+            Toast.makeText(application, response.message, Toast.LENGTH_SHORT).show()
+
+            _loginResult.value = 'c'
+        } catch (e: IOException) {
+            // No Internet Connection
+            _message.value = Event(e.message.toString())
+        } catch (e: HttpException) {
+            // Error Response (4xx, 5xx)
+            val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ApiErrorResponse::class.java)
+            _loginError.value = errorResponse
+            _message.value = Event(errorResponse.message)
+        } finally {
+            _isLoading.value = false
+        }
+    }
+
+    fun loginAsPegawai(email: String, password: String) = viewModelScope.launch {
+        try {
+            _isLoading.value = true
+            val response = ApiConfig.getApiService().loginPegawai(
+                email = email,
+                password = password
+            )
+
+            // Set preferences
+            val data = response.data
+            if (data.user.role != "owner" || data.user.role != "gm") {
+                _message.value = Event("Anda tidak memiliki akses")
             } else {
-                null
+                Utils.setToken(application, data.token)
+                Utils.setUserPegawai(application, data.user)
+                Toast.makeText(application, response.message, Toast.LENGTH_SHORT).show()
+                _loginResult.value = 'p'
             }
-
-            val userP = if (data.message == "Berhasil login sebagai pegawai") {
-                data.data.user as UserPegawai
-            } else {
-                null
-            }
-
-            if (userC != null) {
-                Utils.setToken(application, data.data.token)
-                Utils.setUserCustomer(application, userC)
-                Toast.makeText(application, "Berhasil login sebagai customer", Toast.LENGTH_SHORT).show()
-            } else if (userP != null) {
-                Utils.setToken(application, data.data.token)
-                Utils.setUserPegawai(application, userP)
-                Toast.makeText(application, "Berhasil login sebagai pegawai", Toast.LENGTH_SHORT).show()
-            }
-
-            _loginResult.value = data.data
         } catch (e: IOException) {
             // No Internet Connection
             _message.value = Event(e.message.toString())
