@@ -3,6 +3,7 @@ package com.example.grandatmahotel.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +29,8 @@ class HomeActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, ViewModelFactory.getInstance(application))[HomeViewModel::class.java]
         setContentView(binding.root)
 
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
         setupRV()
         setupViewModelBinding()
 
@@ -35,6 +38,13 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Check if user is logged in
+        viewModel.getUser()
     }
 
     private fun setupViewModelBinding() {
@@ -53,6 +63,14 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+
+        viewModel.userType.observe(this) {
+            when (it) {
+                'c' -> binding.btnLogin.text = "Dashboard"
+                'p' -> binding.btnLogin.text = "Dashboard Admin"
+                else -> binding.btnLogin.text = "Masuk Akun"
+            }
+        }
     }
 
     private fun setupRV() {
@@ -65,8 +83,9 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
+        val llm = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvJenisKamar.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity)
+            layoutManager = llm
             adapter = rvAdapter
         }
     }

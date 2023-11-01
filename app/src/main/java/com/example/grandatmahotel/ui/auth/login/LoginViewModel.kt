@@ -66,7 +66,7 @@ class LoginViewModel(private val application: Application): ViewModel() {
 
             // Set preferences
             val data = response.data
-            if (data.user.role != "owner" || data.user.role != "gm") {
+            if (data.user.role != "owner" && data.user.role != "gm") {
                 _message.value = Event("Anda tidak memiliki akses")
             } else {
                 Utils.setToken(application, data.token)
@@ -80,6 +80,9 @@ class LoginViewModel(private val application: Application): ViewModel() {
         } catch (e: HttpException) {
             // Error Response (4xx, 5xx)
             val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ApiErrorResponse::class.java)
+            Toast.makeText(application, errorResponse.message, Toast.LENGTH_SHORT).show()
+
+
             _loginError.value = errorResponse
             _message.value = Event(errorResponse.message)
         } finally {

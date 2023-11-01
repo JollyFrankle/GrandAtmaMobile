@@ -3,6 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading">Loading…</string>
+    <string name="format_currency">Rp %d</string>
 
     <!-- RV Item Jenis Kamar -->
     <string name="rvijk_rating">%,.1f</string>
@@ -22,8 +23,13 @@
     <string name="rvir_lihat_detail">Lihat Detail</string>
     <string name="rvir_jumlah_tamu_format">%d dewasa, %d anak (%d malam)</string>
     <string name="rvir_total_harga_kamar">Rp %d</string>
+
+    <!-- Bottom Navigation -->
+    <string name="bn_beranda">Beranda</string>
     <string name="bn_reservasi">Reservasi</string>
     <string name="bn_profil_saya">Profil Saya</string>
+
+    <!-- Customer Context Menu -->
     <string name="ccm_keluar_akun">Keluar akun</string>
 
 

@@ -3,11 +3,16 @@
 
     <item
         android:id="@+id/customerHomeFragment"
+        android:icon="@drawable/ic_home_24"
+        android:title="@string/bn_beranda" />
+
+    <item
+        android:id="@+id/customerRiwayatFragment"
         android:icon="@drawable/ic_assignment_24"
         android:title="@string/bn_reservasi" />
 
     <item
-        android:id="@+id/placeholder"
+        android:id="@+id/profileFragment"
         android:icon="@drawable/ic_star_24"
         android:title="@string/bn_profil_saya" />
 

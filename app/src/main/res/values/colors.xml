@@ -5,6 +5,7 @@
     <color name="primary">#2552eb</color>
     <color name="secondary">#f1f5f9</color>
     <color name="muted_foreground">#64748b</color>
+    <color name="accent_foreground">#0f172a</color>
     <color name="orange_400">#fb923c</color>
     <color name="green_500">#22c55e</color>
     <color name="yellow_500">#eab308</color>

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.grandatmahotel.databinding.ActivityMainBinding
 import com.example.grandatmahotel.ui.auth.login.LoginFragment
 import com.example.grandatmahotel.ui.auth.register.RegisterFragment
+import com.example.grandatmahotel.ui.auth.reset_password.ResetPasswordFragment
 import com.example.grandatmahotel.ui.customer.CustomerDashboardActivity
 import com.example.grandatmahotel.utils.ViewModelFactory
 import kotlinx.coroutines.runBlocking
@@ -67,6 +68,10 @@ class MainActivity : AppCompatActivity() {
             }
             "register" -> {
                 transaction.replace(binding.root.id, RegisterFragment())
+                    .commit()
+            }
+            "reset_password" -> {
+                transaction.replace(binding.root.id, ResetPasswordFragment())
                     .commit()
             }
         }

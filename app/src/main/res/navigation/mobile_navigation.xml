@@ -6,9 +6,18 @@
     app:startDestination="@id/customerHomeFragment">
 
     <fragment
+        android:id="@+id/customerRiwayatFragment"
+        android:name="com.example.grandatmahotel.ui.customer.riwayat.CustomerRiwayatFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_customer_riwayat" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.grandatmahotel.ui.customer.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
         android:id="@+id/customerHomeFragment"
         android:name="com.example.grandatmahotel.ui.customer.home.CustomerHomeFragment"
-        android:label="fragment_home"
+        android:label="fragment_customer_home"
         tools:layout="@layout/fragment_customer_home" />
-    <fragment android:id="@+id/placeholder" />
 </navigation>

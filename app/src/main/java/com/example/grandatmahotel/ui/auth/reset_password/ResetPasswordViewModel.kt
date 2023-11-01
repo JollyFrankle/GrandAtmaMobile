@@ -1,4 +1,4 @@
-package com.example.grandatmahotel.ui.auth.register
+package com.example.grandatmahotel.ui.auth.reset_password
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.grandatmahotel.data.remote.model.ApiErrorResponse
-import com.example.grandatmahotel.data.remote.model.UserCustomer
 import com.example.grandatmahotel.data.remote.service.ApiConfig
 import com.example.grandatmahotel.utils.Event
 import com.google.gson.Gson
@@ -14,7 +13,8 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class RegisterViewModel(private val application: Application): ViewModel() {
+class ResetPasswordViewModel(private val application: Application): ViewModel() {
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -27,10 +27,10 @@ class RegisterViewModel(private val application: Application): ViewModel() {
     private val _errors = MutableLiveData<ApiErrorResponse>()
     val errors: LiveData<ApiErrorResponse> = _errors
 
-    fun clientRegister(user: UserCustomer) = viewModelScope.launch {
+    fun requestResetPasword(email: String, type: String) = viewModelScope.launch {
         try {
             _isLoading.value = true
-            val response = ApiConfig.getApiService().registerCustomer(user)
+            val response = ApiConfig.getApiService().resetPassword(email, type)
             _message.value = Event(response.message)
 
             _isSuccess.value = true

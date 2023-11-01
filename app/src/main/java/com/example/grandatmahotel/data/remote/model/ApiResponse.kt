@@ -13,7 +13,7 @@ data class ApiErrorResponse(
     @SerializedName("message")
     val message: String,
     @SerializedName("errors")
-    val errors: HashMap<String, String>? // eg: "email": ["The email has already been taken."]
+    val errors: HashMap<String, String>? // eg: "email": "The email has already been taken."
 ) {
     override fun toString(): String {
         var errors = ""
@@ -40,19 +40,21 @@ data class LoginPegawaiInnerResponse (
 )
 
 data class UserCustomer(
-    @SerializedName("id") val id: Int,
+    @SerializedName("id") val id: Int = 0,
     @SerializedName("type") val type: String,
     @SerializedName("nama") val nama: String,
-    @SerializedName("nama_institusi") val namaInstitusi: String?,
+    @SerializedName("nama_institusi") val namaInstitusi: String? = null,
     @SerializedName("no_identitas") val noIdentitas: String,
     @SerializedName("jenis_identitas") val jenisIdentitas: String,
     @SerializedName("no_telp") val noTelp: String,
     @SerializedName("email") val email: String,
     @SerializedName("alamat") val alamat: String,
-    @SerializedName("verified_at") val verifiedAt: String?,
-    @SerializedName("password_last_changed") val passwordLastChanged: String?,
+    @SerializedName("verified_at") val verifiedAt: String? = null,
+    @SerializedName("password_last_changed") val passwordLastChanged: String? = null,
     @SerializedName("created_at") val createdAt: String,
-    @SerializedName("updated_at") val updatedAt: String
+    @SerializedName("updated_at") val updatedAt: String,
+    @SerializedName("password") val password: String? = null,
+    @SerializedName("old_password") val oldPassword: String? = null
 )
 
 data class UserPegawai (
@@ -105,7 +107,7 @@ data class ReservasiLayanan(
 data class ReservasiRoom(
     @SerializedName("id") val id: Int,
     @SerializedName("id_reservasi") val idReservasi: Int,
-    @SerializedName("no_kamar") val noKamar: String,
+    @SerializedName("no_kamar") val noKamar: String?,
     @SerializedName("id_jenis_kamar") val idJenisKamar: Int,
     @SerializedName("harga_per_malam") val hargaPerMalam: Int,
     @SerializedName("jenis_kamar") val jenisKamar: JenisKamar?

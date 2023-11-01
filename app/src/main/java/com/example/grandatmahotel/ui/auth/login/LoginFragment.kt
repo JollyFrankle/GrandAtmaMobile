@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.grandatmahotel.databinding.FragmentLoginBinding
+import com.example.grandatmahotel.ui.admin.AdminDashboardActivity
+import com.example.grandatmahotel.ui.auth.MainActivity
 import com.example.grandatmahotel.ui.customer.CustomerDashboardActivity
 import com.example.grandatmahotel.utils.Utils
 import com.example.grandatmahotel.utils.ViewModelFactory
@@ -37,7 +39,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO 1: Set the click listener for the login button
         binding.btnLogin.setOnClickListener {
             val email = binding.tilEmail.editText?.text.toString()
             val password = binding.tilPassword.editText?.text.toString()
@@ -50,7 +51,14 @@ class LoginFragment : Fragment() {
             viewModel.loginAsPegawai(email, password)
         }
 
-        // TODO 2: Observe all the LiveData from the ViewModel
+        binding.btnGoToRegister.setOnClickListener {
+            (activity as MainActivity).setFragment("register", true)
+        }
+
+        binding.btnGoToForgetPassword.setOnClickListener {
+            (activity as MainActivity).setFragment("reset_password", true)
+        }
+
         setupViewModelBinding()
     }
 
@@ -77,7 +85,7 @@ class LoginFragment : Fragment() {
                     startActivity(intent)
                     requireActivity().finish()
                 } else if (it == 'p') {
-                    val intent = Intent(requireContext(), CustomerDashboardActivity::class.java)
+                    val intent = Intent(requireContext(), AdminDashboardActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 }

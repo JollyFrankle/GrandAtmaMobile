@@ -4,23 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.grandatmahotel.data.remote.Result
-import com.example.grandatmahotel.data.remote.model.Reservasi
+import com.example.grandatmahotel.R
+import com.example.grandatmahotel.data.remote.model.UserCustomer
 import com.example.grandatmahotel.databinding.FragmentCustomerHomeBinding
+import com.example.grandatmahotel.ui.customer.CustomerDashboardActivity
 import com.example.grandatmahotel.utils.ViewModelFactory
-import com.example.grandatmahotel.utils.rv.HistoryReservasiRVAdapter
 
 class CustomerHomeFragment : Fragment() {
 
     private var _binding: FragmentCustomerHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: CustomerHomeViewModel
-
-    private lateinit var rvAdapter: HistoryReservasiRVAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,38 +31,27 @@ class CustomerHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRV()
-        setupViewModelBinding()
+        setupVieModelBinding()
+
+        binding.llNavProfile.setOnClickListener {
+            (activity as CustomerDashboardActivity).bottomNavigation.selectedItemId = R.id.profileFragment
+        }
+
+        binding.llNavHistoryReservasi.setOnClickListener {
+            (activity as CustomerDashboardActivity).bottomNavigation.selectedItemId = R.id.customerRiwayatFragment
+        }
     }
 
-    private fun setupViewModelBinding() {
-        viewModel.list.observe(this) {
-            when (it) {
-                is Result.Loading -> {
-                }
-
-                is Result.Success -> {
-                    rvAdapter.setList(it.data)
-                }
-
-                is Result.Error -> {
-                    // Show error message
-                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
-                }
+    private fun setupVieModelBinding() {
+        viewModel.customer.observe(viewLifecycleOwner) {
+            if(it != null) {
+                displayDataCustomer(it)
             }
         }
     }
 
-    private fun setupRV() {
-        rvAdapter = HistoryReservasiRVAdapter(object: HistoryReservasiRVAdapter.OnItemCallback {
-            override fun onItemClicked(data: Reservasi) {
-                Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        binding.rvJenisKamar.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = rvAdapter
-        }
+    private fun displayDataCustomer(customer: UserCustomer) {
+        binding.tvNamaUser.text = customer.nama
     }
+
 }
