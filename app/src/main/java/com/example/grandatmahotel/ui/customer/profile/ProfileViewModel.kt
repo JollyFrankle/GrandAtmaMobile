@@ -73,8 +73,13 @@ class ProfileViewModel(private val application: Application): ViewModel() {
     }
 
     fun logout() = viewModelScope.launch {
+        val token = Utils.getToken(application)
+
+        // Clear user data
+        Utils.setUserCustomer(application, null)
+        Utils.setToken(application, "")
+
         try {
-            val token = Utils.getToken(application)
             val response = ApiConfig.getApiService().logoutCustomer(
                 token = "Bearer $token"
             )
@@ -86,9 +91,6 @@ class ProfileViewModel(private val application: Application): ViewModel() {
             // Error Response (4xx, 5xx)
             val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ApiErrorResponse::class.java)
             _message.value = Event(errorResponse.message)
-        } finally {
-            Utils.setUserCustomer(application, null)
-            Utils.setToken(application, "")
         }
     }
 }

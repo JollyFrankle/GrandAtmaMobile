@@ -9,8 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiConfig {
-//    const val BASE_URL = "https://gah-jinston-api.azurewebsites.net"
-    const val BASE_URL = "http://192.168.18.184:4000"
+    const val BASE_URL = "https://gah-jinston-api.azurewebsites.net"
+//    const val BASE_URL = "http://192.168.18.184:4000"
     const val WEB_URL = "https://gah-jinston.vercel.app"
 
     fun getImage(uid: String): String {
@@ -30,8 +30,8 @@ object ApiConfig {
     private val client = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .addInterceptor(customHeader)
-        .readTimeout(60, TimeUnit.SECONDS)
-        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(90, TimeUnit.SECONDS)
+        .connectTimeout(90, TimeUnit.SECONDS)
         .build()
 
     fun getApiService(): ApiService {

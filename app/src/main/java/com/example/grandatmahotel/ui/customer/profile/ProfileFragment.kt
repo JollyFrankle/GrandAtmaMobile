@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.grandatmahotel.R
@@ -49,7 +50,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            updateProfile()
+            modalConfirmUpdate()
         }
 
         binding.btnChangePassword.setOnClickListener {
@@ -144,6 +145,20 @@ class ProfileFragment : Fragment() {
         binding.tilNomorIdentitas.editText?.setText(user.noIdentitas)
         binding.tilNoTelp.editText?.setText(user.noTelp)
         binding.tilAlamat.editText?.setText(user.alamat)
+    }
+
+    private fun modalConfirmUpdate() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Konfirmasi")
+            .setMessage("Apakah anda yakin ingin mengubah data?")
+            .setPositiveButton("Ya") { dialog, _ ->
+                dialog.dismiss()
+                updateProfile()
+            }
+            .setNegativeButton("Tidak") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun updateProfile() {

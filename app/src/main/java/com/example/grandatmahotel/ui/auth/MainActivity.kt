@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.grandatmahotel.databinding.ActivityMainBinding
+import com.example.grandatmahotel.ui.admin.AdminDashboardActivity
 import com.example.grandatmahotel.ui.auth.login.LoginFragment
 import com.example.grandatmahotel.ui.auth.register.RegisterFragment
 import com.example.grandatmahotel.ui.auth.reset_password.ResetPasswordFragment
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             finish()
             return@runBlocking
         } else if (userType == 'p') {
-            val intent = Intent(this@MainActivity, CustomerDashboardActivity::class.java)
+            val intent = Intent(this@MainActivity, AdminDashboardActivity::class.java)
             startActivity(intent)
             finish()
             return@runBlocking

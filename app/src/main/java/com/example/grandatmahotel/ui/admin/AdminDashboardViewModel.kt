@@ -20,8 +20,13 @@ class AdminDashboardViewModel(private val application: Application): ViewModel()
     val message: LiveData<Event<String>> = _message
 
     fun logout() = viewModelScope.launch {
+        val token = Utils.getToken(application)
+
+        // Remove user data
+        Utils.setUserPegawai(application, null)
+        Utils.setToken(application, "")
+
         try {
-            val token = Utils.getToken(application)
             val response = ApiConfig.getApiService().logoutPegawai(
                 token = "Bearer $token"
             )
@@ -33,9 +38,6 @@ class AdminDashboardViewModel(private val application: Application): ViewModel()
             // Error Response (4xx, 5xx)
             val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ApiErrorResponse::class.java)
             _message.value = Event(errorResponse.message)
-        } finally {
-            Utils.setUserPegawai(application, null)
-            Utils.setToken(application, "")
         }
     }
 }

@@ -12,7 +12,9 @@ import com.example.grandatmahotel.data.remote.Result
 import com.example.grandatmahotel.data.remote.model.JenisKamar
 import com.example.grandatmahotel.data.remote.service.ApiConfig
 import com.example.grandatmahotel.databinding.ActivityHomeBinding
+import com.example.grandatmahotel.ui.admin.AdminDashboardActivity
 import com.example.grandatmahotel.ui.auth.MainActivity
+import com.example.grandatmahotel.ui.customer.CustomerDashboardActivity
 import com.example.grandatmahotel.utils.ViewModelFactory
 import com.example.grandatmahotel.utils.rv.JenisKamarRVAdapter
 
@@ -33,15 +35,10 @@ class HomeActivity : AppCompatActivity() {
 
         setupRV()
         setupViewModelBinding()
-
-        binding.btnLogin.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         // Check if user is logged in
         viewModel.getUser()
@@ -66,9 +63,27 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.userType.observe(this) {
             when (it) {
-                'c' -> binding.btnLogin.text = "Dashboard"
-                'p' -> binding.btnLogin.text = "Dashboard Admin"
-                else -> binding.btnLogin.text = "Masuk Akun"
+                'c' -> binding.btnLogin.apply {
+                    text = "Dashboard"
+                    setOnClickListener {
+                        val intent = Intent(this@HomeActivity, CustomerDashboardActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+                'p' -> binding.btnLogin.apply {
+                    text = "Dashboard Admin"
+                    setOnClickListener {
+                        val intent = Intent(this@HomeActivity, AdminDashboardActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+                else -> binding.btnLogin.apply {
+                    text = "Masuk Akun"
+                    setOnClickListener {
+                        val intent = Intent(this@HomeActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
             }
         }
     }
