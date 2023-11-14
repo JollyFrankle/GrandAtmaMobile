@@ -26,7 +26,7 @@ class DetailReservasiViewModel(private val application: Application): ViewModel(
             val token = Utils.getToken(application)
             val response = ApiConfig.getApiService().getDetailReservasiCustomer(
                 token = "Bearer $token",
-                id = id
+                id = id.toLong()
             )
 
             val data = response.data

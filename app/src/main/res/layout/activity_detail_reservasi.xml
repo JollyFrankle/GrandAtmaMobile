@@ -243,6 +243,30 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/llPermintaanTambahan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/muted_foreground"
+                    android:text="Permintaan tambahan" />
+
+                <TextView
+                    android:id="@+id/tvPermintaanTambahan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -288,13 +312,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Kapasitas"
+                            android:text="Jumlah Malam"
                             style="@style/GAH.TableCell.Heading"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Harga per Malam"
+                            style="@style/GAH.TableCell.Heading"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total"
                             style="@style/GAH.TableCell.Heading"/>
 
                     </TableRow>
@@ -348,7 +378,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="Kuantitas"
+                            style="@style/GAH.TableCell.Heading"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Harga"
+                            style="@style/GAH.TableCell.Heading"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total"
                             style="@style/GAH.TableCell.Heading"/>
 
                     </TableRow>
@@ -364,13 +406,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Invoice"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Invoice"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvTanggalCetakInvoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="dicetak pada XXXX-XX-XX"
+                        android:layout_marginBottom="8dp"/>
+                </LinearLayout>
 
                 <TableLayout
                     android:id="@+id/tableInvoice"
@@ -496,6 +553,17 @@
                 </TableLayout>
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnDashboard"
+                style="@style/GAH.Buttons.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:text="Kembali ke Dashboard"
+                app:icon="@drawable/ic_home_24"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/white" />
 
         </LinearLayout>
 

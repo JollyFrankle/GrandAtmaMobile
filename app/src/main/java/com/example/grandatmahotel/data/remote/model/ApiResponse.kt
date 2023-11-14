@@ -1,6 +1,8 @@
 package com.example.grandatmahotel.data.remote.model
 
+import android.util.Log
 import com.google.gson.annotations.SerializedName
+import org.json.JSONArray
 
 data class ApiResponse<T>(
     @SerializedName("message")
@@ -73,11 +75,13 @@ data class Reservasi(
     @SerializedName("id_sm") val idSm: Int?,
     @SerializedName("id_booking") val idBooking: String?,
     @SerializedName("arrival_date") val arrivalDate: String,
+    @SerializedName("departure_date") val departureDate: String,
     @SerializedName("checked_in") val checkedIn: String?,
     @SerializedName("checked_out") val checkedOut: String?,
     @SerializedName("jumlah_malam") val jumlahMalam: Int,
     @SerializedName("jumlah_dewasa") val jumlahDewasa: Int,
     @SerializedName("jumlah_anak") val jumlahAnak: Int,
+    @SerializedName("tanggal_dl_booking") val tanggalDlBooking: String?,
     @SerializedName("tanggal_dp") val tanggalDp: String?,
     @SerializedName("jumlah_dp") val jumlahDp: Int?,
     @SerializedName("status") val status: String,
@@ -144,12 +148,34 @@ data class JenisKamar(
     @SerializedName("short_desc") val shortDesc: String,
     @SerializedName("rating") val rating: Float,
     @SerializedName("fasilitas_unggulan") val fasilitasUnggulan: Any,
-    @SerializedName("fasilitas") val fasilitas: Any,
-    @SerializedName("rincian") val rincian: Any,
+    @SerializedName("fasilitas") val fasilitas: String, // ternyata auto convert ke JSONObject
+    @SerializedName("rincian") val rincian: String, // ternyata auto convert ke JSONArray
     @SerializedName("ukuran") val ukuran: Float,
+    @SerializedName("tipe_bed") val tipeBed: String, // ternyata auto convert ke JSONArray
     @SerializedName("kapasitas") val kapasitas: Int,
     @SerializedName("harga_dasar") val hargaDasar: Int
-)
+) {
+    fun tipeBedAsReadable(): String {
+        val tipeBed = JSONArray(tipeBed)
+        val list = mutableListOf<String>()
+        for (i in 0 until tipeBed.length()) {
+            list.add(tipeBed.getString(i))
+        }
+
+        return list.joinToString(" atau ")
+    }
+
+    fun rincianAsList(): List<String> {
+        Log.e("AAA ", this.toString())
+        val rincian = JSONArray(rincian)
+        val list = mutableListOf<String>()
+        for (i in 0 until rincian.length()) {
+            list.add(rincian.getString(i))
+        }
+
+        return list
+    }
+}
 
 data class FasilitasLayananTambahan(
     @SerializedName("id") val id: Int,
@@ -162,3 +188,34 @@ data class FasilitasLayananTambahan(
     @SerializedName("updated_at") val updatedAt: String
 )
 
+data class RincianTarif (
+    @SerializedName("jumlah_kamar") val jumlahKamar: Int,
+    @SerializedName("harga_diskon") val hargaDiskon: Int,
+    @SerializedName("harga") val harga: Int,
+    @SerializedName("catatan") val catatan: List<CatatanRincianTarif>
+)
+
+data class CatatanRincianTarif (
+    @SerializedName("type") val type: String,
+    @SerializedName("message") val message: String
+)
+
+data class TarifKamar (
+    @SerializedName("jenis_kamar") val jenisKamar: JenisKamar,
+    @SerializedName("rincian_tarif") val rincianTarif: RincianTarif
+)
+
+data class DeadlineAndStage(
+    @SerializedName("deadline") val deadline: String,
+    @SerializedName("stage") val stage: Int
+)
+
+data class BookingResponse(
+    @SerializedName("reservasi") val reservasi: Reservasi,
+    @SerializedName("kamar") val kamar: List<ReservasiRoom>,
+)
+
+data class ReservasiS1Response (
+    @SerializedName("reservation") val reservasi: Reservasi,
+    @SerializedName("layanan_tambahan") val layananTambahan: List<ReservasiLayanan>
+)

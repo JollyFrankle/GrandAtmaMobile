@@ -1,4 +1,4 @@
-package com.example.grandatmahotel.ui.customer.riwayat
+package com.example.grandatmahotel.ui.customer.act_booking.step2
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -15,55 +15,50 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class CustomerRiwayatViewModel(private val application: Application): ViewModel() {
+class Step2BookingViewModel(private val application: Application): ViewModel() {
 
-    private val _list = MutableLiveData<Result<List<Reservasi>>>()
-    val list: LiveData<Result<List<Reservasi>>> = _list
+    private val _reservasi = MutableLiveData<Result<Reservasi>>()
+    val reservasi: LiveData<Result<Reservasi>> = _reservasi
 
-    private val _cancelResult = MutableLiveData<Result<Nothing?>>()
-    val cancelResult: LiveData<Result<Nothing?>> = _cancelResult
+    private val _submitResult = MutableLiveData<Result<Nothing?>>()
+    val submitResult: LiveData<Result<Nothing?>> = _submitResult
 
-    private var status = "upcoming"
-
-    fun refreshReservasi() = getReservasi(status)
-
-    fun getReservasi(status: String) = viewModelScope.launch {
+    fun getReservasi(id: Long) = viewModelScope.launch {
         try {
-            this@CustomerRiwayatViewModel.status = status
-            _list.value = Result.Loading
             val token = Utils.getToken(application)
-            val data = ApiConfig.getApiService().getReservasiCustomer(
+            val data = ApiConfig.getApiService().getDetailReservasiCustomer(
                 token = "Bearer $token",
-                status = this@CustomerRiwayatViewModel.status
+                id = id
             ).data
-            _list.value = Result.Success(data)
+
+            _reservasi.value = Result.Success(data)
         } catch (e: IOException) {
             // No Internet Connection
-            _list.value = Result.Error(e.message.toString())
+            _reservasi.value = Result.Error(e.message.toString())
         } catch (e: HttpException) {
             // Error Response (4xx, 5xx)
             val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ApiErrorResponse::class.java)
-            _list.value = Result.Error(errorResponse.message)
+            _reservasi.value = Result.Error(errorResponse.message)
         }
     }
 
-    fun cancelReservasi(id: Long) = viewModelScope.launch {
+    fun submit(id: Long) = viewModelScope.launch {
         try {
-            _cancelResult.value = Result.Loading
+            _submitResult.value = Result.Loading
             val token = Utils.getToken(application)
-            val data = ApiConfig.getApiService().cancelReservasiCustomer(
+            ApiConfig.getApiService().submitBookingStep2(
                 token = "Bearer $token",
                 id = id
             )
-
-            _cancelResult.value = Result.Success(null)
+            _submitResult.value = Result.Success(null)
         } catch (e: IOException) {
             // No Internet Connection
-            _cancelResult.value = Result.Error(e.message.toString())
+            _submitResult.value = Result.Error(e.message.toString())
         } catch (e: HttpException) {
             // Error Response (4xx, 5xx)
             val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ApiErrorResponse::class.java)
-            _cancelResult.value = Result.Error(errorResponse.message)
+            _submitResult.value = Result.Error(errorResponse.message)
         }
     }
+
 }

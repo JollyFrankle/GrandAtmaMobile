@@ -31,11 +31,17 @@ class DetailReservasiActivity : AppCompatActivity() {
         val id = intent.getIntExtra(EXTRA_ID, 0)
         viewModel.getDetailReservasi(id)
 
-        setupViewModelBinding()
+        if (intent.getBooleanExtra(EXTRA_SHOW_BTN_DASHBOARD, false)) {
+            binding.btnDashboard.visibility = View.VISIBLE
+        } else {
+            binding.btnDashboard.visibility = View.GONE
+        }
 
         binding.root.setOnRefreshListener {
             viewModel.getDetailReservasi(id)
         }
+
+        setupViewModelBinding()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -71,7 +77,7 @@ class DetailReservasiActivity : AppCompatActivity() {
         }
 
         // TOP CARDS
-        val status = Utils.getRiwayatStatus(reservasi.status)
+        val status = Utils.getRiwayatStatus(reservasi.status, reservasi.tanggalDlBooking)
         binding.tvIdBooking.text = reservasi.idBooking ?: "(Belum dibuatkan)"
         binding.chipStatus.setChipBackgroundColorResource(status.first)
         binding.chipStatus.text = status.second
@@ -83,9 +89,15 @@ class DetailReservasiActivity : AppCompatActivity() {
         binding.tvNoTelpPemesan.text = reservasi.userCustomer?.noTelp
 
         // RESERVASI
-        binding.tvTanggalMenginap.text = Utils.formatDate(Utils.parseDate(reservasi.arrivalDate), Utils.DF_DATE_READABLE)
+        binding.tvTanggalMenginap.text = "${Utils.formatDate(Utils.parseDate(reservasi.arrivalDate), Utils.DF_DATE_READABLE)} - ${Utils.formatDate(Utils.parseDate(reservasi.departureDate), Utils.DF_DATE_READABLE)}"
         binding.tvJumlahTamu.text = getString(R.string.rvir_jumlah_tamu_format, reservasi.jumlahDewasa, reservasi.jumlahAnak, reservasi.jumlahMalam)
         binding.tvTanggalDP.text = if(reservasi.tanggalDp != null) Utils.formatDate(Utils.parseDate(reservasi.tanggalDp), Utils.DF_DATE_READABLE) else "-"
+        if (reservasi.permintaanTambahan != null) {
+            binding.llPermintaanTambahan.visibility = View.VISIBLE
+            binding.tvPermintaanTambahan.text = reservasi.permintaanTambahan
+        } else {
+            binding.llPermintaanTambahan.visibility = View.GONE
+        }
 
         // KAMAR
         CustomTableRows(
@@ -97,8 +109,9 @@ class DetailReservasiActivity : AppCompatActivity() {
                     (index+1).toString(),
                     cell.jenisKamar!!.nama,
                     cell.noKamar ?: "-",
-                    cell.jenisKamar.kapasitas.toString(),
-                    cell.hargaPerMalam.toString()
+                    reservasi.jumlahMalam.toString(),
+                    getString(R.string.format_currency, cell.hargaPerMalam),
+                    getString(R.string.format_currency, reservasi.jumlahMalam * cell.hargaPerMalam)
                 )
             }
         ).render()
@@ -113,7 +126,9 @@ class DetailReservasiActivity : AppCompatActivity() {
                     (index+1).toString(),
                     cell.layananTambahan!!.nama,
                     Utils.formatDate(Utils.parseDate(cell.tanggalPakai), Utils.DF_DATE_READABLE),
-                    getString(R.string.format_currency, cell.total)
+                    "${cell.qty} ${cell.layananTambahan.satuan}",
+                    getString(R.string.format_currency, cell.total / cell.qty),
+                    getString(R.string.format_currency, cell.total),
                 )
             }
         ).render()
@@ -122,9 +137,12 @@ class DetailReservasiActivity : AppCompatActivity() {
         if (reservasi.invoice != null) {
             binding.llInvoice.visibility = View.VISIBLE
 
-            val tglCheckIn = Utils.parseDate(reservasi.arrivalDate)
+            val tglCheckIn = Utils.parseDate(reservasi.checkedIn ?: reservasi.arrivalDate)
+            val tglCheckOut = Utils.parseDate(reservasi.checkedOut ?: reservasi.departureDate)
+            val tglCetakInvoice = Utils.parseDate(reservasi.invoice.createdAt)
+            binding.tvTanggalCetakInvoice.text = Utils.formatDate(tglCetakInvoice, Utils.DF_DATE_READABLE)
             binding.tvTanggalCheckIn.text = Utils.formatDate(tglCheckIn, Utils.DF_DATE_READABLE)
-            binding.tvTanggalCheckOut.text = Utils.formatDate(Utils.getTanggalCheckOut(tglCheckIn, reservasi.jumlahMalam), Utils.DF_DATE_READABLE)
+            binding.tvTanggalCheckOut.text = Utils.formatDate(tglCheckOut, Utils.DF_DATE_READABLE)
             binding.tvTotalHargaKamar.text = getString(R.string.format_currency, reservasi.invoice.totalKamar)
             binding.tvTotalHargaLayanan.text = getString(R.string.format_currency, reservasi.invoice.totalLayanan)
             binding.tvPajakLayanan.text = getString(R.string.format_currency, reservasi.invoice.pajakLayanan)
@@ -136,5 +154,6 @@ class DetailReservasiActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ID = "id"
+        const val EXTRA_SHOW_BTN_DASHBOARD = "show_btn_dashboard"
     }
 }

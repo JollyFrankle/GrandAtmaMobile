@@ -1,5 +1,6 @@
 package com.example.grandatmahotel.ui.customer.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.example.grandatmahotel.R
 import com.example.grandatmahotel.data.remote.model.UserCustomer
 import com.example.grandatmahotel.databinding.FragmentCustomerHomeBinding
 import com.example.grandatmahotel.ui.customer.CustomerDashboardActivity
+import com.example.grandatmahotel.ui.customer.act_room_search.RoomSearchActivity
 import com.example.grandatmahotel.utils.ViewModelFactory
 
 class CustomerHomeFragment : Fragment() {
@@ -39,6 +41,11 @@ class CustomerHomeFragment : Fragment() {
 
         binding.llNavHistoryReservasi.setOnClickListener {
             (activity as CustomerDashboardActivity).bottomNavigation.selectedItemId = R.id.customerRiwayatFragment
+        }
+
+        binding.btnReservasi.setOnClickListener {
+            val intent = Intent(requireContext(), RoomSearchActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -9,8 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiConfig {
-    const val BASE_URL = "https://gah-jinston-api.azurewebsites.net"
-//    const val BASE_URL = "http://192.168.18.184:4000"
+//    private const val BASE_URL = "https://gah-jinston-api.azurewebsites.net"
+//    private const val BASE_URL = "http://192.168.18.184:4000"
+    private const val BASE_URL = "http://192.168.252.167:4000"
+
     const val WEB_URL = "https://gah-jinston.vercel.app"
 
     fun getImage(uid: String): String {

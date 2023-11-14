@@ -9,7 +9,12 @@ import com.example.grandatmahotel.ui.auth.login.LoginViewModel
 import com.example.grandatmahotel.ui.auth.register.RegisterViewModel
 import com.example.grandatmahotel.ui.auth.reset_password.ResetPasswordViewModel
 import com.example.grandatmahotel.ui.customer.CustomerDashboardViewModel
+import com.example.grandatmahotel.ui.customer.act_booking.BookingViewModel
+import com.example.grandatmahotel.ui.customer.act_booking.step1.Step1BookingViewModel
+import com.example.grandatmahotel.ui.customer.act_booking.step2.Step2BookingViewModel
+import com.example.grandatmahotel.ui.customer.act_booking.step3.Step3BookingViewModel
 import com.example.grandatmahotel.ui.customer.act_detail.DetailReservasiViewModel
+import com.example.grandatmahotel.ui.customer.act_room_search.RoomSearchViewModel
 import com.example.grandatmahotel.ui.customer.home.CustomerHomeViewModel
 import com.example.grandatmahotel.ui.customer.profile.ProfileViewModel
 import com.example.grandatmahotel.ui.customer.riwayat.CustomerRiwayatViewModel
@@ -32,6 +37,11 @@ class ViewModelFactory private constructor(private val application: Application)
             modelClass.isAssignableFrom(DetailReservasiViewModel::class.java) -> DetailReservasiViewModel(application) as T
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(application) as T
             modelClass.isAssignableFrom(CustomerHomeViewModel::class.java) -> CustomerHomeViewModel(application) as T
+            modelClass.isAssignableFrom(RoomSearchViewModel::class.java) -> RoomSearchViewModel(application) as T
+            modelClass.isAssignableFrom(BookingViewModel::class.java) -> BookingViewModel(application) as T
+            modelClass.isAssignableFrom(Step1BookingViewModel::class.java) -> Step1BookingViewModel(application) as T
+            modelClass.isAssignableFrom(Step2BookingViewModel::class.java) -> Step2BookingViewModel(application) as T
+            modelClass.isAssignableFrom(Step3BookingViewModel::class.java) -> Step3BookingViewModel(application) as T
 
             // PEGAWAI (ADMIN)
             modelClass.isAssignableFrom(AdminDashboardViewModel::class.java) -> AdminDashboardViewModel(application) as T

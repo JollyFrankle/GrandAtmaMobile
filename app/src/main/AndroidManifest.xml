@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
+        android:minSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +19,14 @@
         android:theme="@style/Theme.GrandAtmaHotel"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.customer.act_booking.BookingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GrandAtmaHotel.NoActionBar" />
+        <activity
+            android:name=".ui.customer.act_room_search.RoomSearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GrandAtmaHotel.NoActionBar" />
         <activity
             android:name=".ui.customer.act_detail.DetailReservasiActivity"
             android:exported="false" />
