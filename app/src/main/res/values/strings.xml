@@ -23,7 +23,8 @@
     <string name="rvir_continue">Lanjutkan Booking</string>
     <string name="rvir_cancel">Batalkan</string>
     <string name="rvir_lihat_detail">Lihat Detail</string>
-    <string name="rvir_jumlah_tamu_format">%d dewasa, %d anak (%d malam)</string>
+    <string name="rvir_tanda_terima">Tanda Terima</string>
+    <string name="rvir_jumlah_tamu_format">%d dewasa, %d anak (%d kamar)</string>
     <string name="rvir_total_harga_kamar">Rp %,d</string>
 
     <!-- Bottom Navigation -->

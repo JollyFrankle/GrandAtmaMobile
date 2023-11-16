@@ -120,7 +120,7 @@ class Step2BookingFragment : Fragment() {
         // GROUP KAMAR UNTUK RESI
         val groupedKamar = mutableListOf<KamarGrouped>()
         for (kamar in reservasi.reservasiRooms ?: emptyList()) {
-            val index = groupedKamar.indexOfFirst { it.kamar.id == kamar.id }
+            val index = groupedKamar.indexOfFirst { it.kamar.idJenisKamar == kamar.idJenisKamar }
             if (index == -1) {
                 groupedKamar.add(
                     KamarGrouped(kamar, 1)

@@ -2,11 +2,14 @@ package com.example.grandatmahotel.utils.rv
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.grandatmahotel.R
 import com.example.grandatmahotel.data.remote.model.Reservasi
+import com.example.grandatmahotel.data.remote.service.ApiConfig
 import com.example.grandatmahotel.databinding.RvItemReservasiBinding
 import com.example.grandatmahotel.ui.customer.act_booking.BookingActivity
 import com.example.grandatmahotel.utils.Utils
@@ -25,7 +28,7 @@ class HistoryReservasiRVAdapter(private val callback: OnItemCallback): RecyclerV
     }
 
     fun searchList(query: String = searchQuery) {
-        if (searchQuery.isNotBlank()) {
+        if (query.isNotBlank()) {
             val filteredList = mutableListOf<Reservasi>()
             for (reservasi in list) {
                 if (reservasi.idBooking?.contains(query, true) == true) {
@@ -33,6 +36,7 @@ class HistoryReservasiRVAdapter(private val callback: OnItemCallback): RecyclerV
                 }
             }
             setFilteredList(filteredList)
+            searchQuery = query
         } else {
             setFilteredList(list)
         }
@@ -93,9 +97,23 @@ class HistoryReservasiRVAdapter(private val callback: OnItemCallback): RecyclerV
             binding.btnContinue.visibility = ViewGroup.GONE
         }
 
+        if (status.second == "Belum Dibayar" || listOf("batal", "expired").contains(reservasi.status)) {
+            binding.btnTT.visibility = ViewGroup.GONE
+        } else {
+            binding.btnTT.visibility = ViewGroup.VISIBLE
+        }
+
         binding.btnContinue.setOnClickListener {
             val intent = Intent(context, BookingActivity::class.java)
             intent.putExtra(BookingActivity.EXTRA_ID, reservasi.id.toLong())
+            context.startActivity(intent)
+        }
+
+        binding.btnTT.setOnClickListener {
+            val unencoded = "${reservasi.id},${reservasi.idCustomer},${reservasi.idBooking}"
+            val data = Base64.encodeToString(unencoded.toByteArray(), Base64.DEFAULT)
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("${ApiConfig.BASE_URL}/public/pdf/tanda-terima/${data}")
             context.startActivity(intent)
         }
     }

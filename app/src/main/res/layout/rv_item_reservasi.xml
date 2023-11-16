@@ -145,22 +145,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/btnContinue"
                 style="@style/GAH.Buttons.Link.Dense"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/rvir_continue" />
 
             <Button
                 android:id="@+id/btnViewDetail"
                 style="@style/GAH.Buttons.Link.Dense"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:text="@string/rvir_lihat_detail" />
 
             <Button
@@ -169,8 +171,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rvir_cancel"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:textColor="@color/red_500"
                 app:rippleColor="@color/red_500" />
+
+            <Button
+                android:id="@+id/btnTT"
+                style="@style/GAH.Buttons.Link.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rvir_tanda_terima"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textColor="@color/teal_500"
+                app:rippleColor="@color/teal_500" />
 
         </LinearLayout>
 

@@ -154,6 +154,12 @@ class RoomSearchActivity : AppCompatActivity() {
 
         dialogSearchBinding.apply {
             actvTanggal.setOnClickListener {
+                tilTanggal.isEnabled = false
+                datePicker.show(supportFragmentManager, "DATE_PICKER")
+            }
+
+            tilTanggal.setEndIconOnClickListener {
+                tilTanggal.isEnabled = false
                 datePicker.show(supportFragmentManager, "DATE_PICKER")
             }
 
@@ -252,6 +258,10 @@ class RoomSearchActivity : AppCompatActivity() {
             viewModel.tglCheckIn = it.first ?: 0
             viewModel.tglCheckOut = it.second ?: 0
         }
+
+        datePicker.addOnDismissListener {
+            dialogSearchBinding.tilTanggal.isEnabled = true
+        }
     }
 
     private fun setDialogConfirmContent() {
@@ -263,7 +273,7 @@ class RoomSearchActivity : AppCompatActivity() {
         val jumlahTamu = "${viewModel.jumlahDewasa} Dewasa, ${viewModel.jumlahAnak} Anak"
 
         binding.tvCheckIn.text = tglCheckIn
-        binding.tvCheckOut.text = tglCheckOut
+        binding.tvCheckOut.text = "${tglCheckOut} (${Utils.getDateDiff(Date(viewModel.tglCheckOut), Date(viewModel.tglCheckIn))} malam)"
         binding.tvJumlahTamu.text = jumlahTamu
 
         // KAMAR YANG AKAN DIPESAN

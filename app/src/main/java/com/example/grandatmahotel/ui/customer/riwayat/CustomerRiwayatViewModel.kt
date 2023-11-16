@@ -23,18 +23,24 @@ class CustomerRiwayatViewModel(private val application: Application): ViewModel(
     private val _cancelResult = MutableLiveData<Result<Nothing?>>()
     val cancelResult: LiveData<Result<Nothing?>> = _cancelResult
 
-    private var status = "upcoming"
+    private val status = listOf(
+        "upcoming",
+        "completed",
+        "cancelled"
+    )
 
-    fun refreshReservasi() = getReservasi(status)
+    var selectedTab = 0
 
-    fun getReservasi(status: String) = viewModelScope.launch {
+    fun refreshReservasi() = getReservasi(selectedTab)
+
+    fun getReservasi(tabIndex: Int) = viewModelScope.launch {
         try {
-            this@CustomerRiwayatViewModel.status = status
+            this@CustomerRiwayatViewModel.selectedTab = tabIndex
             _list.value = Result.Loading
             val token = Utils.getToken(application)
             val data = ApiConfig.getApiService().getReservasiCustomer(
                 token = "Bearer $token",
-                status = this@CustomerRiwayatViewModel.status
+                status = status[this@CustomerRiwayatViewModel.selectedTab]
             ).data
             _list.value = Result.Success(data)
         } catch (e: IOException) {

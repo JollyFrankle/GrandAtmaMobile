@@ -37,6 +37,10 @@ class DetailReservasiActivity : AppCompatActivity() {
             binding.btnDashboard.visibility = View.GONE
         }
 
+        binding.btnDashboard.setOnClickListener {
+            finish()
+        }
+
         binding.root.setOnRefreshListener {
             viewModel.getDetailReservasi(id)
         }
@@ -72,8 +76,9 @@ class DetailReservasiActivity : AppCompatActivity() {
 
     private fun showDetailReservasi(reservasi: Reservasi) {
         // APP BAR
+        val tglMenginap = "${Utils.formatDate(Utils.parseDate(reservasi.arrivalDate), Utils.DF_DATE_READABLE)} - ${Utils.formatDate(Utils.parseDate(reservasi.departureDate), Utils.DF_DATE_READABLE)}"
         supportActionBar?.apply {
-            title = "Detail Reservasi ${reservasi.idBooking}"
+            title = "Detail Reservasi ${reservasi.idBooking ?: tglMenginap}"
         }
 
         // TOP CARDS
@@ -85,12 +90,13 @@ class DetailReservasiActivity : AppCompatActivity() {
 
         // PEMESAN
         binding.tvNamaPemesan.text = reservasi.userCustomer?.nama
+        binding.tvNoIdentitasPemesan.text = "${reservasi.userCustomer?.jenisIdentitas?.uppercase()} – ${reservasi.userCustomer?.noIdentitas}"
         binding.tvEmailPemesan.text = reservasi.userCustomer?.email
         binding.tvNoTelpPemesan.text = reservasi.userCustomer?.noTelp
 
         // RESERVASI
-        binding.tvTanggalMenginap.text = "${Utils.formatDate(Utils.parseDate(reservasi.arrivalDate), Utils.DF_DATE_READABLE)} - ${Utils.formatDate(Utils.parseDate(reservasi.departureDate), Utils.DF_DATE_READABLE)}"
-        binding.tvJumlahTamu.text = getString(R.string.rvir_jumlah_tamu_format, reservasi.jumlahDewasa, reservasi.jumlahAnak, reservasi.jumlahMalam)
+        binding.tvTanggalMenginap.text = "$tglMenginap (${reservasi.jumlahMalam} malam)"
+        binding.tvJumlahTamu.text = getString(R.string.rvir_jumlah_tamu_format, reservasi.jumlahDewasa, reservasi.jumlahAnak, reservasi.reservasiRooms?.size ?: 0)
         binding.tvTanggalDP.text = if(reservasi.tanggalDp != null) Utils.formatDate(Utils.parseDate(reservasi.tanggalDp), Utils.DF_DATE_READABLE) else "-"
         if (reservasi.permintaanTambahan != null) {
             binding.llPermintaanTambahan.visibility = View.VISIBLE

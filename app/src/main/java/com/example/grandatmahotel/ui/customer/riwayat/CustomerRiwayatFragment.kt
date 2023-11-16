@@ -58,11 +58,7 @@ class CustomerRiwayatFragment : Fragment() {
 
         binding.tlRiwayat.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab?.position) {
-                    0 -> viewModel.getReservasi("upcoming")
-                    1 -> viewModel.getReservasi("completed")
-                    2 -> viewModel.getReservasi("cancelled")
-                }
+                viewModel.getReservasi(tab?.position ?: 0)
                 binding.tilSearch.editText?.setText("")
             }
 
@@ -85,6 +81,9 @@ class CustomerRiwayatFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.refreshReservasi()
+
+        // set selected tab from viewModel
+        binding.tlRiwayat.getTabAt(viewModel.selectedTab)?.select()
     }
 
     private fun setupViewModelBinding() {

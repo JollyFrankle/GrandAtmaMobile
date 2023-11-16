@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.customer.act_booking.step1.Step1BookingFragment">
+    tools:context=".ui.customer.act_booking.step3.Step3BookingFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -192,9 +192,11 @@
             android:id="@+id/imgBuktiPembayaran"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            tools:src="@color/secondary" />
+            android:src="@color/secondary" />
 
         <Button
+            android:enabled="false"
+            android:alpha="0.5"
             android:id="@+id/btnLanjutkan"
             style="@style/GAH.Buttons.Primary"
             android:layout_width="match_parent"

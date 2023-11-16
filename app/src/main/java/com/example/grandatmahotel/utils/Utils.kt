@@ -64,14 +64,6 @@ object Utils {
             .create()
     }
 
-    fun getCurrentDate(pattern: String = DF_TIMESTAMP, dateDiff: Int = 0): String {
-        val date = Calendar.getInstance().time
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.add(Calendar.DATE, dateDiff)
-        return formatDate(calendar.time, pattern)
-    }
-
     fun getCurrentDateAsDate(dateDiff: Int = 0): Date {
         val date = Calendar.getInstance().time
         val calendar = Calendar.getInstance()
@@ -106,7 +98,7 @@ object Utils {
         }
     }
 
-    fun getTimeDiff(date1: Date, date2: Date): Int {
+    fun getDateDiff(date1: Date, date2: Date): Int {
         val diff = date1.time - date2.time
         return (diff / (1000 * 60 * 60 * 24)).toInt()
     }
@@ -137,7 +129,7 @@ object Utils {
         val tanggalDlBooking = if (reservasi.tanggalDlBooking != null) parseDate(reservasi.tanggalDlBooking) else null
 
         // if > 7 days, show llYesRefund
-        val diffDays = getTimeDiff(tanggalCheckIn, getCurrentDateAsDate())
+        val diffDays = getDateDiff(tanggalCheckIn, getCurrentDateAsDate())
         Log.e("isReservasiCancelable", "reservasiiD: ${reservasi.id} - diffDays: $diffDays")
         val isOverCheckOut = getCurrentDateAsDate() > parseDate(reservasi.departureDate).apply {
             val calendar = Calendar.getInstance()
@@ -147,17 +139,21 @@ object Utils {
             calendar.set(Calendar.SECOND, 0)
             this.time = calendar.time.time
         }
-        val isOverDl = if (tanggalDlBooking != null) getCurrentDateAsDate() > tanggalDlBooking else false
-        Log.e("isReservasiCancelable", "reservasiiD: ${reservasi.id} - getCurrentDateAsDate: ${getCurrentDateAsDate()} - tanggalDlBooking: $tanggalDlBooking")
-        val isReservasiUncancelable = reservasi.status == "checkin" || reservasi.status == "batal" || reservasi.status == "expired"
-        if (reservasi.status.startsWith("pending-") && !isOverDl) {
-            return CancelableStatus.NO_CONSEQUENCE
+        val isOverDl = if (tanggalDlBooking != null) Date().time > tanggalDlBooking.time else false
+        Log.e("isReservasiCancelable", "reservasiiD: ${reservasi.id} - getCurrentDateAsDate: ${Date()} - tanggalDlBooking: $tanggalDlBooking")
+        val isReservasiUncancelable = listOf("batal", "checkin", "selesai", "expired").contains(reservasi.status)
+        return if (reservasi.status.startsWith("pending-")) {
+            if (isOverDl) {
+                CancelableStatus.NOT_CANCELABLE
+            } else {
+                CancelableStatus.NO_CONSEQUENCE
+            }
         } else if (diffDays > 7) {
-            return CancelableStatus.YES_REFUND
+            CancelableStatus.YES_REFUND
         } else if (isOverCheckOut || isReservasiUncancelable) {
-            return CancelableStatus.NOT_CANCELABLE
+            CancelableStatus.NOT_CANCELABLE
         } else {
-            return CancelableStatus.NO_REFUND
+            CancelableStatus.NO_REFUND
         }
     }
 

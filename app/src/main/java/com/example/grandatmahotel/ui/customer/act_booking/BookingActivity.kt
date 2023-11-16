@@ -68,8 +68,8 @@ class BookingActivity : AppCompatActivity() {
 
         viewModel.getDeadlineAndStage(id)
 
-        setupViewModelBinding()
         setupDialogExpired()
+        setupViewModelBinding()
     }
 
     private fun setupViewModelBinding() {
@@ -81,10 +81,23 @@ class BookingActivity : AppCompatActivity() {
         viewModel.currentPage.observe(this) {
             toPage(it)
         }
+
+        viewModel.cdFinished.observe(this) {
+            if (it) {
+                dialogExpired.show()
+            }
+        }
     }
 
     private fun setupDialogExpired() {
-
+        dialogExpired = AlertDialog.Builder(this)
+            .setTitle("Waktu pemesanan habis")
+            .setMessage("Silakan ulangi pemesanan.")
+            .setCancelable(false)
+            .setPositiveButton("OK") { _, _ ->
+                finish()
+            }
+            .create()
     }
 
     private fun getHMS(seconds: Long): String {

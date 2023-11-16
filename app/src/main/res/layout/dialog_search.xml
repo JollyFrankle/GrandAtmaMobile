@@ -14,13 +14,15 @@
         android:layout_marginBottom="16dp"
         app:startIconDrawable="@drawable/ic_calendar_month_24"
         android:focusable="false"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="Tanggal Pemesanan"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_calendar_month_24">
 
         <AutoCompleteTextView
             android:id="@+id/actvTanggal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tanggal Pemesanan"
             android:inputType="none"
             android:lines="1" />
 
@@ -31,12 +33,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        app:startIconDrawable="@drawable/ic_person_24">
+        app:startIconDrawable="@drawable/ic_person_24"
+        android:hint="Jumlah Dewasa">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Jumlah Dewasa"
             android:inputType="number"
             android:lines="1" />
 
@@ -47,12 +49,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        app:startIconDrawable="@drawable/ic_child_care_24">
+        app:startIconDrawable="@drawable/ic_child_care_24"
+        android:hint="Jumlah Anak">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Jumlah Anak"
             android:inputType="number"
             android:lines="1" />
 
@@ -63,12 +65,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        app:startIconDrawable="@drawable/ic_login_24">
+        app:startIconDrawable="@drawable/ic_login_24"
+        android:hint="Jumlah Kamar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Jumlah Kamar"
             android:inputType="number"
             android:lines="1" />
 
