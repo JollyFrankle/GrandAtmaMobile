@@ -18,7 +18,7 @@ class CustomerHomeViewModel(private val application: Application): ViewModel() {
         getCustomer()
     }
 
-    fun getCustomer() = viewModelScope.launch {
+    private fun getCustomer() = viewModelScope.launch {
         _customer.value = Utils.getUserCustomer(application)
     }
 }

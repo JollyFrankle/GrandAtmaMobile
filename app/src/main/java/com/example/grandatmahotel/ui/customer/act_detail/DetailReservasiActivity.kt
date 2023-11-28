@@ -143,8 +143,8 @@ class DetailReservasiActivity : AppCompatActivity() {
         if (reservasi.invoice != null) {
             binding.llInvoice.visibility = View.VISIBLE
 
-            val tglCheckIn = Utils.parseDate(reservasi.checkedIn ?: reservasi.arrivalDate)
-            val tglCheckOut = Utils.parseDate(reservasi.checkedOut ?: reservasi.departureDate)
+            val tglCheckIn = Utils.parseDate(reservasi.arrivalDate)
+            val tglCheckOut = Utils.parseDate(reservasi.departureDate)
             val tglCetakInvoice = Utils.parseDate(reservasi.invoice.createdAt)
             binding.tvTanggalCetakInvoice.text = Utils.formatDate(tglCetakInvoice, Utils.DF_DATE_READABLE)
             binding.tvTanggalCheckIn.text = Utils.formatDate(tglCheckIn, Utils.DF_DATE_READABLE)

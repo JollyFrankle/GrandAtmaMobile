@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.grandatmahotel.data.remote.model.ApiErrorResponse
+import com.example.grandatmahotel.data.remote.model.UserPegawai
 import com.example.grandatmahotel.data.remote.service.ApiConfig
 import com.example.grandatmahotel.utils.Event
 import com.example.grandatmahotel.utils.Utils
@@ -18,6 +19,13 @@ class AdminDashboardViewModel(private val application: Application): ViewModel()
 
     private val _message = MutableLiveData<Event<String>>()
     val message: LiveData<Event<String>> = _message
+
+    private val _user = MutableLiveData<UserPegawai>()
+    val user: LiveData<UserPegawai> = _user
+
+    init {
+        getUser()
+    }
 
     fun logout() = viewModelScope.launch {
         val token = Utils.getToken(application)
@@ -39,5 +47,9 @@ class AdminDashboardViewModel(private val application: Application): ViewModel()
             val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ApiErrorResponse::class.java)
             _message.value = Event(errorResponse.message)
         }
+    }
+
+    private fun getUser() = viewModelScope.launch {
+        _user.value = Utils.getUserPegawai(application)
     }
 }

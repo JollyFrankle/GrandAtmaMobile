@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.grandatmahotel.ui.admin.AdminDashboardViewModel
+import com.example.grandatmahotel.ui.admin.laporan.LaporanViewModel
 import com.example.grandatmahotel.ui.auth.MainViewModel
 import com.example.grandatmahotel.ui.auth.login.LoginViewModel
 import com.example.grandatmahotel.ui.auth.register.RegisterViewModel
@@ -45,6 +46,7 @@ class ViewModelFactory private constructor(private val application: Application)
 
             // PEGAWAI (ADMIN)
             modelClass.isAssignableFrom(AdminDashboardViewModel::class.java) -> AdminDashboardViewModel(application) as T
+            modelClass.isAssignableFrom(LaporanViewModel::class.java) -> LaporanViewModel(application) as T
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
     }

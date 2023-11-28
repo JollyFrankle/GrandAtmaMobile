@@ -57,7 +57,7 @@ class CustomerRiwayatViewModel(private val application: Application): ViewModel(
         try {
             _cancelResult.value = Result.Loading
             val token = Utils.getToken(application)
-            val data = ApiConfig.getApiService().cancelReservasiCustomer(
+            ApiConfig.getApiService().cancelReservasiCustomer(
                 token = "Bearer $token",
                 id = id
             )

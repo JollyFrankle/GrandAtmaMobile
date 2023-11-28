@@ -76,8 +76,6 @@ data class Reservasi(
     @SerializedName("id_booking") val idBooking: String?,
     @SerializedName("arrival_date") val arrivalDate: String,
     @SerializedName("departure_date") val departureDate: String,
-    @SerializedName("checked_in") val checkedIn: String?,
-    @SerializedName("checked_out") val checkedOut: String?,
     @SerializedName("jumlah_malam") val jumlahMalam: Int,
     @SerializedName("jumlah_dewasa") val jumlahDewasa: Int,
     @SerializedName("jumlah_anak") val jumlahAnak: Int,
@@ -86,7 +84,6 @@ data class Reservasi(
     @SerializedName("jumlah_dp") val jumlahDp: Int?,
     @SerializedName("status") val status: String,
     @SerializedName("total") val total: Int,
-    @SerializedName("deposit") val deposit: Int?,
     @SerializedName("permintaan_tambahan") val permintaanTambahan: String?,
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("updated_at") val updatedAt: String,
@@ -95,6 +92,18 @@ data class Reservasi(
     @SerializedName("reservasi_rooms") val reservasiRooms: List<ReservasiRoom>?,
     @SerializedName("invoice") val invoice: Invoice?,
     @SerializedName("user_customer") val userCustomer: UserCustomer?,
+    @SerializedName("user_pegawai") val userPegawai: UserPegawai?,
+    @SerializedName("reservasi_cico") val reservasiCICO: ReservasiCICO?,
+)
+
+data class ReservasiCICO(
+    @SerializedName("id_reservasi") val idReservasi: Int,
+    @SerializedName("id_fo") val idFO: Int,
+    @SerializedName("checked_in_at") val checkedInAt: String,
+    @SerializedName("checked_out_at") val checkedOutAt: String?,
+    @SerializedName("deposit") val deposit: Int,
+    @SerializedName("gambar_identitas") val gambarIdentitas: String,
+    @SerializedName("reservasi") val reservasi: Reservasi?,
     @SerializedName("user_pegawai") val userPegawai: UserPegawai?
 )
 
